@@ -51,10 +51,10 @@ body {
   --base-s: 15%;
   --base-l: 15%;
 
-  --background-primary: #060c11a0;
-  --background-primary-alt: #3b3f48;
-  --background-secondary: #202225a0;
-  --background-secondary-alt: #0c1018d1;
+  --background-primary: #222222;
+  --background-primary-alt: #222222;
+  --background-secondary: #262626;
+  --background-secondary-alt: #262626;
   --text-normal: #bbc0c5;
   --text-graph: #dde0e5;
   --dot-graph: #bbc0c5;
@@ -157,7 +157,16 @@ body:not(.default-font-color) span:not(.cm-highlight).cm-em {
   background-color: var(--tag-background-color-hover)
 }
 .cm-hashtag{
-  padding: 0%;
+  padding-block-start: 0%;
+  padding-block-end: 0%;
+}
+.markdown-reading-view .tag{
+  padding-block-start: 0%;
+  padding-block-end: 0%;
+}
+.cm-preview-code-block.cm-embed-block.markdown-rendered .tag{
+  padding-block-start: 0%;
+  padding-block-end: 0%;
 }
 
 /* 行内代码格式 */
