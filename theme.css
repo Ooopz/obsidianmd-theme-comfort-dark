@@ -175,6 +175,16 @@ body:not(.default-font-color) span:not(.cm-highlight).cm-em {
   padding: 4px;
 }
 
+/* 代码关闭自动换行 */
+.markdown-reading-view .markdown-preview-view code {
+  white-space: pre;
+}
+
+/* 预览模式下代码会出界，但起码比自动换行强 */
+.HyperMD-codeblock {
+  white-space: pre;
+}
+
 /* 代码块颜色 */
 .token.comment,
 .token.prolog,
