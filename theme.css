@@ -45,6 +45,7 @@ body {
   --accent-h: 40;
   --accent-s: 50%;
   --accent-l: 50%;
+  --color-prime: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
   
   /* 颜色 */
   --base-h: 212;
@@ -111,6 +112,9 @@ body {
   --tag-background-hover: var(--tag-background-color-hover);
   --tag-color: var(--tag-font-color);
   --tag-color-hover: var(--tag-font-color);
+
+  --checkbox-border-color: var(--color-prime);
+  --checkbox-color: var(--color-prime);
 }
 
 /* 完成的 Check Box */
@@ -268,4 +272,18 @@ body:not(.default-font-color) span:not(.cm-highlight).cm-em {
 
 /* Kanban */
 
+.kanban-plugin {
+  --lane-width: 300px;
+}
 
+.kanban-plugin__item-prefix-button-wrapper input[type=checkbox] {
+  filter: hue-rotate(0deg);
+  width: 18px;
+  height: 18px;
+}
+
+/* Jira Issue */
+
+.jira-issue-container td {
+  font-size: 14px;
+}
