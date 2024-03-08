@@ -12,3 +12,7 @@ a simple theme for Obisidian.md
 
 - Fix table font size in Jirra issue plugin after Obsidian V1.5.3 update
 - Consist checkbox color to accent color in kanban plugin
+
+### 1.4.0
+
+- Add rounded corners style
