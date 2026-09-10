@@ -16,3 +16,7 @@ a simple theme for Obisidian.md
 ### 1.4.0
 
 - Add rounded corners style
+
+### 1.5.0
+
+- Add support for "- [/]" in progress checkbox style.

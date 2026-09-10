@@ -48,10 +48,6 @@ body {
   --color-prime: hsl(var(--accent-h), var(--accent-s), var(--accent-l));
 
   /* 颜色 */
-  --base-h: 212;
-  --base-s: 15%;
-  --base-l: 15%;
-
   --background-primary: #222222;
   --background-primary-alt: #262626;
   --background-secondary: #222222;
@@ -81,16 +77,9 @@ body {
   --code-background: #383838;
   --code-comment: #6a9955;
   --code-keyword: #c586c0;
-  --code-class: #4ec9b0;
-  --code-package: #3f9486;
   --code-function: #dcdcaa;
-  --code-number: #b5cea8;
   --code-value: #b5cea8;
   --code-string: #ce9178;
-  --code-variable: #8cdcfe;
-  --code-define: #569cd6;
-  --code-bracket: #ffd700;
-  --code-oper: #d4d4d4;
   --code-tag: #b5cea8;
   --code-punctuation: #d4d4d4;
   --code-operator: #d4d4d4;
@@ -119,20 +108,45 @@ body {
   --divider-color: var(--background-primary-alt);
 }
 
-/* 完成的 Check Box */
-.markdown-preview-view ul>li.task-list-item.is-checked,
-.markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='x'],
-.markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='X'],
-.markdown-source-view.mod-cm6 .HyperMD-task-line[data-task='M'] {
-  text-decoration: deleted;
+/* Check Box */
+.markdown-source-view.mod-cm6 .HyperMD-task-line:is([data-task='x'], [data-task='X'], [data-task='M']) {
+  text-decoration: line-through;
   color: var(--text-faint);
 }
 
-/* 图片展示 */
-img {
-  border-radius: 4px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12),
-    0 1px 2px rgba(0, 0, 0, 0.24);
+.markdown-source-view.mod-cm6 .HyperMD-task-line:is([data-task='x'], [data-task='X'], [data-task='M']) .task-list-label::after {
+  content: '';
+  display: inline-block;
+  width: 0.5em;
+  height: 1em;
+  margin-right: -0.5em;
+  background: var(--background-primary);
+  position: relative;
+  z-index: 1;
+}
+
+/* 自定义任务状态：- [/] 进行中；- [!] 重要；- [?] 疑问 */
+:is(li.task-list-item, .markdown-source-view.mod-cm6 .HyperMD-task-line)[data-task='/'] {
+  --task-color: var(--color-prime);
+  --task-icon: url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%3E%3Cpath%20d='M8%202.5A5.5%205.5%200%200%200%208%2013.5Z'%20fill='%23222222'%20stroke='%23222222'%20stroke-width='2'%20stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+
+:is(li.task-list-item, .markdown-source-view.mod-cm6 .HyperMD-task-line)[data-task='/'] input[type=checkbox] {
+  appearance: none;
+  width: var(--checkbox-size, 16px);
+  height: var(--checkbox-size, 16px);
+  flex-shrink: 0;
+  background-color: var(--task-color);
+  background-image: var(--task-icon);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%;
+  border: var(--checkbox-border-width, 1.5px) solid var(--task-color);
+}
+
+:is(li.task-list-item, .markdown-source-view.mod-cm6 .HyperMD-task-line)[data-task='/'] input[type=checkbox]::before,
+:is(li.task-list-item, .markdown-source-view.mod-cm6 .HyperMD-task-line)[data-task='/'] input[type=checkbox]::after {
+  content: none;
 }
 
 /* 引用块 */
@@ -157,26 +171,17 @@ body:not(.default-font-color) span:not(.cm-highlight).cm-em {
 /* 正确设置预览模式 Tag 文字颜色 */
 .cm-hashtag.cm-hashtag-begin,
 .cm-hashtag.cm-hashtag-end {
-  color: var(--tag-font-color)
+  color: var(--tag-font-color);
 }
 
 .cm-hashtag:hover {
-  background-color: var(--tag-background-color-hover)
+  background-color: var(--tag-background-color-hover);
 }
 
-.cm-hashtag {
-  padding-block-start: 0%;
-  padding-block-end: 0%;
-}
-
-.markdown-reading-view .tag {
-  padding-block-start: 0%;
-  padding-block-end: 0%;
-}
-
+.cm-hashtag,
+.markdown-reading-view .tag,
 .cm-preview-code-block.cm-embed-block.markdown-rendered .tag {
-  padding-block-start: 0%;
-  padding-block-end: 0%;
+  padding-block: 0;
 }
 
 /* 行内代码格式 */
@@ -199,7 +204,6 @@ body:not(.default-font-color) span:not(.cm-highlight).cm-em {
 .token.comment,
 .token.prolog,
 .token.doctype,
-.token.cdata .cm-comment,
 .cm-meta {
   color: var(--code-comment);
 }
@@ -284,16 +288,15 @@ body:not(.default-font-color) span:not(.cm-highlight).cm-em {
 }
 
 /* 圆角 */
-iframe {
+iframe,
+img,
+video {
   border-radius: 10px;
 }
 
 img {
-  border-radius: 10px;
-}
-
-video {
-  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12),
+    0 1px 2px rgba(0, 0, 0, 0.24);
 }
 
 .workspace-tabs {
@@ -301,7 +304,7 @@ video {
 }
 
 .workspace-tab-container {
-  margin: 0px 3px 3px 3px;
+  margin: 0 3px 3px;
   border-radius: 20px;
 }
 
@@ -322,8 +325,13 @@ video {
   --lane-width: 300px;
 }
 
+/* 已完成卡片：与正文完成态一致 */
+.kanban-plugin__item.is-complete {
+  color: var(--text-faint);
+  text-decoration: line-through;
+}
+
 .kanban-plugin__item-prefix-button-wrapper input[type=checkbox] {
-  filter: hue-rotate(0deg);
   width: 18px;
   height: 18px;
 }
