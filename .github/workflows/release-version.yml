@@ -6,45 +6,36 @@ on:
     tags:
       - "*" # Push events to matching any tag format, i.e. 1.0, 20.15.10
 
+# The default GITHUB_TOKEN is read-only; creating a release needs write access.
+permissions:
+  contents: write
+
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
-      - name: Bundle
-        id: bundle
+      - uses: actions/checkout@v4
+
+      # Guards against releasing a tag that doesn't match what Obsidian will read.
+      - name: Verify tag matches manifest version
         run: |
-          ls
-          echo "::set-output name=tag_name::$(git tag --sort version:refname | tail -n 1)"
-      - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          VERSION: ${{ github.ref }}
+          tag="${GITHUB_REF_NAME}"
+          version="$(jq -r .version manifest.json)"
+          echo "tag=$tag manifest.json=$version"
+          if [ "$tag" != "$version" ]; then
+            echo "::error::tag '$tag' does not match manifest.json version '$version'"
+            exit 1
+          fi
+
+      - name: Create release
+        uses: softprops/action-gh-release@v2
         with:
-          tag_name: ${{ github.ref }}
-          release_name: ${{ github.ref }}
+          name: ${{ github.ref_name }}
+          tag_name: ${{ github.ref_name }}
           draft: false
           prerelease: false
-      - name: Upload manifest.json
-        id: upload-manifest
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./manifest.json
-          asset_name: manifest.json
-          asset_content_type: application/json
-      - name: Upload theme.css
-        id: upload-css
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./theme.css
-          asset_name: theme.css
-          asset_content_type: text/css
+          generate_release_notes: true
+          files: |
+            manifest.json
+            theme.css
